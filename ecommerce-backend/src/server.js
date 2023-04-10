@@ -12,7 +12,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(cors());
 
-mongoose.connect("mongodb+srv://rohitsemriwal:rr1234@mycluster.aweko.mongodb.net/ecommerce?retryWrites=true&w=majority");
+mongoose.connect("-- Your MongoDB URI here --");
 
 const UserRoutes = require('./routes/user_routes');
 app.use("/api/user", UserRoutes);
