@@ -15,7 +15,7 @@ class LinkButton extends StatelessWidget {
     return CupertinoButton(
       onPressed: onPressed,
       padding: EdgeInsets.zero,
-      child: Text(text)
+      child: Text(text),
     );
   }
 }

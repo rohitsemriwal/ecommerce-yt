@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
   static Color accent = const Color(0xff1ab7c3);
   static Color text = const Color(0xff212121);
-  static Color textLight = const Color(0xFF8A8A8A);
+  static Color textLight = const Color(0xff8a8a8a);
   static Color white = const Color(0xffffffff);
 }
 
@@ -63,12 +62,6 @@ class TextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.text,
     fontSize: 16
-  );
-
-  static TextStyle body3 = TextStyle(
-    fontWeight: FontWeight.normal,
-    color: AppColors.text,
-    fontSize: 14
   );
 
 }

@@ -5,7 +5,6 @@ import 'package:ecommerce/core/api.dart';
 import 'package:ecommerce/data/models/user/user_model.dart';
 
 class UserRepository {
-
   final _api = Api();
 
   Future<UserModel> createAccount({
@@ -17,16 +16,16 @@ class UserRepository {
         "/user/createAccount",
         data: jsonEncode({
           "email": email,
-          "password": password
+          "password": password 
         })
       );
+
       ApiResponse apiResponse = ApiResponse.fromResponse(response);
 
       if(!apiResponse.success) {
         throw apiResponse.message.toString();
       }
 
-      // Convert raw data to model
       return UserModel.fromJson(apiResponse.data);
     }
     catch(ex) {
@@ -43,16 +42,16 @@ class UserRepository {
         "/user/signIn",
         data: jsonEncode({
           "email": email,
-          "password": password
+          "password": password 
         })
       );
+
       ApiResponse apiResponse = ApiResponse.fromResponse(response);
 
       if(!apiResponse.success) {
         throw apiResponse.message.toString();
       }
 
-      // Convert raw data to model
       return UserModel.fromJson(apiResponse.data);
     }
     catch(ex) {

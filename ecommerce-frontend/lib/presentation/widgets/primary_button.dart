@@ -8,7 +8,7 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
     required this.text,
-    this.onPressed
+    this.onPressed,
   });
 
   @override

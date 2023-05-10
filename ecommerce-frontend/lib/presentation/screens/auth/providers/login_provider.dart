@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:ecommerce/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:ecommerce/logic/cubits/user_cubit/user_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,10 +39,6 @@ class LoginProvider with ChangeNotifier {
   }
 
   void logIn() async {
-    if(!formKey.currentState!.validate()) {
-      return;
-    }
-
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     
