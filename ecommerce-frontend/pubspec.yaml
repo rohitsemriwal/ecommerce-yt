@@ -40,7 +40,7 @@ dependencies:
   flutter_bloc: ^8.1.2
   provider: ^6.0.5
   email_validator: ^2.1.17
-  shared_preferences: ^2.1.0
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:
