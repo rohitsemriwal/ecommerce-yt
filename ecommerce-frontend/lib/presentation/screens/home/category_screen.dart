@@ -1,5 +1,6 @@
 import 'package:ecommerce/logic/cubits/category_cubit/category_cubit.dart';
 import 'package:ecommerce/logic/cubits/category_cubit/category_state.dart';
+import 'package:ecommerce/presentation/screens/product/category_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,7 +36,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
             final category = state.categories[index];
 
             return ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, CategoryProductScreen.routeName, arguments: category);
+              },
               leading: const Icon(Icons.category),
               title: Text("${category.title}"),
               trailing: const Icon(Icons.keyboard_arrow_right),

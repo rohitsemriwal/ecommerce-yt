@@ -1,4 +1,5 @@
 const OrderModel = require('./../models/order_model');
+const CartModel = require('./../models/cart_model');
 
 const OrderController = {
 
@@ -11,6 +12,12 @@ const OrderController = {
             });
             await newOrder.save();
 
+            // Update the cart
+            await CartModel.findOneAndUpdate(
+                { user: user._id },
+                { items: [] }
+            );
+
             return res.json({ success: true, data: newOrder, message: "Order created!" });
         }
         catch(ex) {
@@ -22,8 +29,8 @@ const OrderController = {
         try {
             const userId = req.params.userId;
             const foundOrders = await OrderModel.find({
-                "user.id": userId
-            });
+                "user._id": userId
+            }).sort({ createdOn: -1 });
             return res.json({ success: true, data: foundOrders });
         }
         catch(ex) {

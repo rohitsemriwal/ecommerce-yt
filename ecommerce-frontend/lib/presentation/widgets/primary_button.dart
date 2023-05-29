@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 class PrimaryButton extends StatelessWidget {
   final String text;
   final Function()? onPressed;
+  final Color? color;
 
   const PrimaryButton({
     super.key,
     required this.text,
     this.onPressed,
+    this.color
   });
 
   @override
@@ -17,7 +19,7 @@ class PrimaryButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: CupertinoButton(
         onPressed: onPressed,
-        color: AppColors.accent,
+        color: color ?? AppColors.accent,
         child: Text(text),
       ),
     );
