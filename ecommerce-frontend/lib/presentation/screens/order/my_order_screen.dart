@@ -86,6 +86,8 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
                       },
                     ),
 
+                    Text("Status: ${order.status}"),
+
                   ],
                 );
 

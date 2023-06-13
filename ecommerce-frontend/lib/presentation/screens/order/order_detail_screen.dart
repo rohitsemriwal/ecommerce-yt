@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:ecommerce/core/ui.dart';
+import 'package:ecommerce/data/models/order/order_model.dart';
 import 'package:ecommerce/data/models/user/user_model.dart';
 import 'package:ecommerce/logic/cubits/cart_cubit/cart_cubit.dart';
 import 'package:ecommerce/logic/cubits/cart_cubit/cart_state.dart';
 import 'package:ecommerce/logic/cubits/order_cubit/order_cubit.dart';
 import 'package:ecommerce/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:ecommerce/logic/cubits/user_cubit/user_state.dart';
+import 'package:ecommerce/logic/services/razorpay.dart';
 import 'package:ecommerce/presentation/screens/order/order_placed_screen.dart';
 import 'package:ecommerce/presentation/screens/order/providers/order_detail_provider.dart';
 import 'package:ecommerce/presentation/screens/user/edit_profile_screen.dart';
@@ -127,12 +131,40 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
             PrimaryButton(
               onPressed: () async {
-                bool success = await BlocProvider.of<OrderCubit>(context).createOrder(
+                OrderModel? newOrder = await BlocProvider.of<OrderCubit>(context).createOrder(
                   items: BlocProvider.of<CartCubit>(context).state.items,
                   paymentMethod: Provider.of<OrderDetailProvider>(context, listen: false).paymentMethod.toString(),
                 );
 
-                if(success) {
+                if(newOrder == null) return;
+
+                if(newOrder.status == "payment-pending") {
+                  await RazorPayServices.checkoutOrder(
+                    newOrder,
+                    onSuccess: (response) async {
+                      newOrder.status = "order-placed";
+
+                      bool success = await BlocProvider.of<OrderCubit>(context).updateOrder(
+                        newOrder,
+                        paymentId: response.paymentId,
+                        signature: response.signature
+                      );
+
+                      if(!success) {
+                        log("Can't update the order!");
+                        return;
+                      }
+
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.pushNamed(context, OrderPlacedScreen.routeName);
+                    },
+                    onFailure: (response) {
+                      log("Payment Failed!");
+                    }
+                  );
+                }
+
+                if(newOrder.status == "order-placed") {
                   Navigator.popUntil(context, (route) => route.isFirst);
                   Navigator.pushNamed(context, OrderPlacedScreen.routeName);
                 }

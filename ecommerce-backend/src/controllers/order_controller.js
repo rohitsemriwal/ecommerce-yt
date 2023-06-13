@@ -1,14 +1,25 @@
 const OrderModel = require('./../models/order_model');
 const CartModel = require('./../models/cart_model');
+const razorpay = require('./../services/razorpay');
 
 const OrderController = {
 
     createOrder: async function(req, res) {
         try {
-            const { user, items } = req.body;
+            const { user, items, status, totalAmount } = req.body;
+
+            // Create Order in RazorPay
+            const razorPayOrder = await razorpay.orders.create({
+                amount: totalAmount * 100,
+                currency: "INR"
+            });
+
             const newOrder = new OrderModel({
                 user: user,
-                items: items
+                items: items,
+                status: status,
+                totalAmount: totalAmount,
+                razorPayOrderId: razorPayOrder.id
             });
             await newOrder.save();
 
@@ -40,10 +51,14 @@ const OrderController = {
 
     updateOrderStatus: async function(req, res) {
         try {
-            const { orderId, status } = req.body;
+            const { orderId, status, razorPayPaymentId, razorPaySignature } = req.body;
             const updatedOrder = await OrderModel.findOneAndUpdate(
                 { _id: orderId },
-                { status: status },
+                {
+                    status: status,
+                    razorPayPaymentId: razorPayPaymentId,
+                    razorPaySignature: razorPaySignature
+                },
                 { new: true }
             );
             return res.json({ success: true, data: updatedOrder });
